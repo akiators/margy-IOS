@@ -1,7 +1,7 @@
 
 workflows:
   ios-build:
-    name: MargyT iOS Build
+    name: MargyT iOS IPA
     max_build_duration: 60
     instance_type: mac_mini_m2
 
@@ -11,6 +11,7 @@ workflows:
     scripts:
       - name: Build iOS app
         script: |
+          set -e
           xcodebuild \
             -project "MargyT-iOS-Starter/MargyT-iOS/MargyTiOS.xcodeproj" \
             -scheme "MargyTiOS" \
@@ -20,6 +21,14 @@ workflows:
             CODE_SIGNING_ALLOWED=NO \
             build
 
+      - name: Package unsigned IPA
+        script: |
+          set -e
+          mkdir -p build/ipa/Payload
+          cp -R "build/DerivedData/Build/Products/Release-iphoneos/MargyTiOS.app" "build/ipa/Payload/"
+          cd build/ipa
+          zip -r MargyTiOS.ipa Payload
+
     artifacts:
-      - build/DerivedData/Build/Products/Release-iphoneos/*.app
+      - build/ipa/MargyTiOS.ipa
       - /tmp/xcodebuild_logs/*.log
