@@ -12,7 +12,7 @@ workflows:
       - name: Build iOS app
         script: |
           xcodebuild \
-            -project "MargyT-iOS/MargyTiOS.xcodeproj" \
+            -project "MargyT-iOS-Starter/MargyT-iOS/MargyTiOS.xcodeproj" \
             -scheme "MargyTiOS" \
             -configuration Release \
             -sdk iphoneos \
